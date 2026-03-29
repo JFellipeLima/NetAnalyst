@@ -1,11 +1,15 @@
 #!/bin/python3
+"""
+This script monitors a pre-determined domain and saves its information 
+to a database for consumption.
+"""
 import asyncio
 import httpx
 
 #Funçôes
-async def save_data(response):
+async def save_data(log):
     '''Save the log information in database'''
-    print(response)
+    print(log)
 
 
 async def verify(domain, header):
@@ -24,12 +28,12 @@ async def verify(domain, header):
 
 #Tests
 if __name__ == "__main__":
-    header = {
+    HEADERS = {
             "Accept-Encoding": "gzip, deflate",
             "accept": "application/json"
             }
-    domain = "https://google.com"
+    URL = "https://google.com"
     try:
-        asyncio.run(verify(domain, header))
+        asyncio.run(verify(URL, HEADERS))
     except KeyboardInterrupt:
-        print("Manually interrupt")
+        print("Manually interrupted")
