@@ -5,6 +5,8 @@ import asyncio
 #Funçôes
 async def Save_data(response):
     '''Save the log information in database'''
+    body = response
+    print(body)
 
 
 async def Verify(HOST, HEADERS):
@@ -12,6 +14,7 @@ async def Verify(HOST, HEADERS):
     async with httpx.AsyncClient(headers=HEADERS,http2=True, follow_redirects=True,timeout=10) as client:
         while True:
             response = await client.head(HOST)
+            await Save_data(response.status_code)
             await asyncio.sleep(15)
 
         return "Connection time expired"
@@ -23,7 +26,7 @@ if __name__ == "__main__":
             "Accept-Encoding": "gzip, deflate",
             "accept": "application/json"
             }
-    HOST= "https://google.com"
+    HOST= "https://bancocn.com"
     try:
         asyncio.run(Verify(HOST, HEADERS))
     except KeyboardInterrupt:
