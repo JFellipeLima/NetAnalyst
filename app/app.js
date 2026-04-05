@@ -1,11 +1,15 @@
+import dotenv from "dotenv"
 import express from "express"
+import connect_db from "./schemas/database.js"
 import routes from "./routes/netRoute.js"
 
 const app = express()
-app.use(express.json())
+dotenv.config()
 
+app.use(express.json())
 app.use("/", routes)
 
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
+  connect_db(process.env.MONGO_NODE_URL)
   console.log("Servidor online.")
 })
