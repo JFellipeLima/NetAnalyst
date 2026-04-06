@@ -3,11 +3,12 @@
 This script monitors a pre-determined domain and saves its information 
 to a database for consumption.
 """
+import time
+import os
+import datetime
 
 from motor.motor_asyncio import AsyncIOMotorClient
-import os
 import asyncio
-import datetime, time
 from dotenv import load_dotenv
 import httpx
 
@@ -27,7 +28,7 @@ async def database_connect():
     except Exception as error:
         print(error)
 
-async def data_analyst(db):
+async def data_analyst(_db):
     """get the same data and transform this a information to graphic"""
 
 async def save_data(url, status, log):
@@ -59,16 +60,16 @@ async def verify(domain, header, cnn):
                 print(error)
 
 
-#Tests
 async def main():
-    DB = await database_connect()
-    HEADERS = {
+    """Organize and run script"""
+    db = await database_connect()
+    headers = {
             "Accept-Encoding": "gzip, deflate",
             "accept": "application/json"
             }
-    URL = os.getenv("DOMAIN")
+    url = os.getenv("DOMAIN")
     try:
-        await verify(URL, HEADERS, DB)
+        await verify(url, headers, db)
     except KeyboardInterrupt:
         print("Manually interrupted")
 

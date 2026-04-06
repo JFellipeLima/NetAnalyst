@@ -1,2 +1,4 @@
 httpx
+motor
+dnspython
 python-dotenv
