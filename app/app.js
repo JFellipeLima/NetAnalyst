@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 import express from "express"
 import connect_db from "./schemas/database.js"
-import routes from "./routes/netRoute.js"
+import routes from "./routes/logRoutes.js"
 
 const app = express()
 dotenv.config()
