@@ -1,3 +1,4 @@
+"""Connect with the database"""
 
 from os import getenv
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -13,7 +14,7 @@ async def database_connect():
         print("Connecting to the database...\n")
 
         return cnn["analystics"]
-    
+
     except Exception as error:
         log_error(error)
         return None

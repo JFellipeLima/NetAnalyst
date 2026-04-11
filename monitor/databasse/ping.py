@@ -1,4 +1,5 @@
-import asyncio
+"""Save ping data in database"""
+
 from datetime import datetime, UTC
 from err_save import log_error
 
