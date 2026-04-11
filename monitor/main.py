@@ -7,7 +7,7 @@ import os
 
 import asyncio
 from dotenv import load_dotenv
-from database import database_connect
+from databasse.database import database_connect
 from verify import verify
 
 load_dotenv()
@@ -15,7 +15,6 @@ load_dotenv()
 async def main():
     """Organize and run script"""
     db = await database_connect()
-    print("Succefully conected at database")
 
     headers = {
         "Accept-Encoding": "gzip, deflate",

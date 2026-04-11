@@ -2,7 +2,9 @@ import time
 import asyncio
 
 import httpx
-from database import save_data, save_ping
+from err_save import log_error
+from databasse.data import save_data
+from databasse.ping import save_ping
 
 async def verify(domain, header, cnn):
     """Connect and get information with host"""
@@ -22,4 +24,5 @@ async def verify(domain, header, cnn):
                 await save_ping(domain, res.status_code, cnn, latency_ms, res.request.method)
                 await asyncio.sleep(5)
             except Exception as error:
-                print(error)
+                log_error(error)
+                await asyncio.sleep(5)
