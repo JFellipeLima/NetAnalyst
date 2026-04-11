@@ -13,7 +13,7 @@ async def database_connect():
         cnn = AsyncIOMotorClient(getenv("MONGO_PYTHON_URL"), serverSelectionTimeoutMS=5000)
         print("Connecting to the database...\n")
 
-        return cnn["analystics"]
+        return cnn["netAnalyst"]
 
     except Exception as error:
         log_error(error)

@@ -8,7 +8,7 @@ async def save_data(db, url):
     db_collection = db["analytics"]
     db_log = db["logs"]
 
-    last_hour = datetime.now(UTC) - timedelta(hours=1)
+    last_hour = datetime.now(UTC) - timedelta(minutes=1)
     check_last = await db_collection.find_one({}, sort=[("date", -1)])
     check_last_update = check_last["date"].replace(tzinfo=UTC) if check_last else None
     stats = await db_log.find({"date": {"$gte": last_hour}}).to_list(None)
@@ -46,6 +46,6 @@ async def save_data(db, url):
         "status": status,
         "date": datetime.now(UTC)
     }
-    if check_last_update is None or datetime.now(UTC) - check_last_update >= timedelta(hours=1):
+    if check_last_update is None or datetime.now(UTC) - check_last_update >= timedelta(minutes=1):
         await db_collection.insert_one(body)
-
+        print(f"Saved analytics: \n{body}\n")
