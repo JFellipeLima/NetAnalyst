@@ -16,25 +16,28 @@ async def verify(domain, header, cnn):
         verify=False
     ) as client:
         while True:
+            res = None
             try:
                 res = await client.head(domain)
                 res.raise_for_status()
-                latency_ms = res.elapsed.total_seconds() * 1000
-                
-                await save_ping(domain, res.status_code, cnn, latency_ms, res.request.method)
-                                
-            except (httpx.RequestError, httpx.HTTPStatusError):
-                print(f"Error connecting to {domain}, retrying...")
-                
-                res = await client.get(domain)
-                latency_ms = res.elapsed.total_seconds() * 1000
-                
-                await save_ping(domain, res.status_code, cnn, latency_ms, res.request.method)
-                
-            except Exception as exc:
-                print(f"An {type(exc).__name__} occurred, check the error.txt file for more details")
-                log_error(domain, cnn)
-                
+
+            except httpx.HTTPStatusError as exc:
+                print(f"\033[33mStatus code error for {domain}: {exc.response.status_code}, retrying...\033[33m\n")
+                try:
+                    res = await client.get(domain)
+
+                except Exception as exc:
+                    print(f"\033[31mError occurred while retrying with GET method for {domain}\033[0m\n")
+                    log_error(exc)
+
+            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+                print(f"\033[31mConnection error for {domain}\033[0m\n")
+                log_error(exc)
+
             finally:
+                if res:
+                    latency = res.elapsed.total_seconds() * 1000
+                    await save_ping(domain, res.status_code, latency, res.request.method)
+
                 await save_data(cnn, domain)
                 await asyncio.sleep(5)
