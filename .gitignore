@@ -1,6 +1,6 @@
-/database/__pycache__
+/databasse/__pycache__
 /node_modules
 .env
 /monitor/send.py
 /monitor/error.txt 
-/monitor__pycache__/
+/monitor/__pycache__/
