@@ -21,9 +21,8 @@ async def main():
     headers = {"Accept-Encoding": "gzip, deflate", "accept": "application/json"}
     url = os.getenv("DOMAIN")
     domains_test = [
-        "http://www.google.com",
-        "http://www.facebook.com",
-        "http://www.twitter.com",
+        "https://www.google.com",
+        "https://www.twitter.com",
     ]
     progress = [verify(url, headers, db) for url in domains_test]
 
