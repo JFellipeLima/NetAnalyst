@@ -8,44 +8,45 @@ async def save_data(db, url):
     db_collection = db["analytics"]
     db_log = db["logs"]
 
-    last_hour = datetime.now(UTC) - timedelta(minutes=1)
-    check_last = await db_collection.find_one({}, sort=[("date", -1)])
+    last_hour = datetime.now(UTC) - timedelta(minutes=3)
+    check_last = await db_collection.find_one({"domain_name": url}, sort=[("date", -1)])
     check_last_update = check_last["date"].replace(tzinfo=UTC) if check_last else None
-    stats = await db_log.find({"date": {"$gte": last_hour}}).to_list(None)
-    latencies = sorted([i["latency_ms"] for i in stats])
 
-    if not stats:
-        return None
+    if check_last_update is None or datetime.now(UTC) - check_last_update >= timedelta(minutes=3):
+        stats = await db_log.find({"date": {"$gte": last_hour}, "domain": url}).to_list(None)
+        latencies = sorted([i["latency_ms"] for i in stats])
 
-    if latencies:
-        max_latency = latencies[-1]
-        min_latency = latencies[0]
-        avg_latency = latencies[len(latencies) // 2]
-    else:
-        return None
+        if not stats:
+            return None
 
-    incidents = [
-        {"status_code": i["status_code"], "date": i["date"]}
-        for i in stats
-        if i["status_code"] not in [200, 201]
-    ]
+        if latencies:
+            max_latency = latencies[-1]
+            min_latency = latencies[0]
+            avg_latency = latencies[len(latencies) // 2]
+        else:
+            return None
 
-    if incidents:
-        status = "down"
-    elif avg_latency > 500:
-        status = "unstable"
-    else:
-        status = "stable"
+        incidents = [
+            {"status_code": i["status_code"], "date": i["date"]}
+            for i in stats
+            if i["status_code"] not in [200, 201]
+        ]
 
-    body = {
-        "domain_name": url,
-        "max_latency": max_latency,
-        "min_latency": min_latency,
-        "avg_latency": avg_latency,
-        "incidents": incidents,
-        "status": status,
-        "date": datetime.now(UTC)
-    }
-    if check_last_update is None or datetime.now(UTC) - check_last_update >= timedelta(minutes=1):
+        if incidents:
+            status = "down"
+        elif avg_latency > 500:
+            status = "unstable"
+        else:
+            status = "stable"
+
+        body = {
+            "domain_name": url,
+            "max_latency": max_latency,
+            "min_latency": min_latency,
+            "avg_latency": avg_latency,
+            "incidents": incidents,
+            "status": status,
+            "date": datetime.now(UTC)
+        }
         await db_collection.insert_one(body)
         print(f"Saved analytics: \n{body}\n")

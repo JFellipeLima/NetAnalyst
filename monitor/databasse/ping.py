@@ -3,6 +3,7 @@
 from datetime import datetime, UTC
 from err_save import log_error
 
+
 async def save_ping(url, status, db, latency, method):
     """
     Save the log information in database.
@@ -15,7 +16,7 @@ async def save_ping(url, status, db, latency, method):
         "status_code": status,
         "date": datetime.now(UTC),
         "latency_ms": latency,
-        "method": method
+        "method": method,
     }
     try:
         await log.insert_one(body_ping)
