@@ -1,2 +1,6 @@
+/databasse/__pycache__
 /node_modules
 .env
+/monitor/send.py
+/monitor/error.txt 
+/monitor/__pycache__/
