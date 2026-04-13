@@ -22,7 +22,7 @@ def log_error(exc):
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         log_error(exc)  # Retry logging after creating the directory
 
-    except Exception as exc:
+    except Exception as log_exc: # pylint: disable=broad-exception-caught
         print(
-            f"\033[31mFailed to log error: {exc}\033[0m\n"
+            f"\033[31mFailed to log error: {log_exc}\033[0m\n"
         )

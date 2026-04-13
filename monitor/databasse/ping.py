@@ -21,5 +21,5 @@ async def save_ping(url, status, db, latency, method):
     try:
         await log.insert_one(body_ping)
         print(f"Saved: {body_ping}\n")
-    except Exception as error:
+    except Exception as error: # pylint: disable=broad-exception-caught
         log_error(error)

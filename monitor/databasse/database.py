@@ -19,6 +19,6 @@ async def database_connect():
             print("Connected to the database!\n")
             return cnn["netAnalyst"]
 
-    except Exception as error:
+    except Exception as error: # pylint: disable=broad-exception-caught
         log_error(error)
         return None

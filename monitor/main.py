@@ -31,8 +31,7 @@ async def main():
     domain_list = {}
 
     headers = {"Accept-Encoding": "gzip, deflate", "accept": "application/json"}
-    domains = [verify(url, headers, db, domain_list) for url in os.getenv("DOMAINS").split(",")]
-    
+    domains = [verify(url, headers, db, domain_list) for url in os.getenv("DOMAINS").split(",")] 
     await asyncio.gather(
         *domains,
         local_check(domain_list, domains)
