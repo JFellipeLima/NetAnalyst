@@ -6,15 +6,17 @@ A lightweight network monitoring system that tracks domain availability and resp
 
 Two independent services share the same MongoDB database:
 
-- **Monitor** (Python) — pings the target domain every 5 seconds, measures latency, and runs hourly analytics to classify the domain as `stable`, `unstable`, or `down`
-- **API** (Node.js/Express) — exposes the collected data via REST endpoints
+- **Monitor** (Python) — pings configured domains every 5 seconds, measures latency, and runs hourly analytics to classify each domain as `stable`, `unstable`, or `down`
+- **API** (Node.js/Express) — exposes collected data via REST endpoints
+
+The monitor runs multiple domains concurrently and detects whether failures are caused by the target site or by a local network issue.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Python 3.11+
-- Node.js 18+
+- Node.js 20+
 - MongoDB instance (local or Atlas)
 
 ### Installation
@@ -32,9 +34,9 @@ npm install
 Create a `.env` file in the project root:
 
 ```env
-MONGO_PYTHON_URL=mongodb://localhost:27017
-MONGO_NODE_URL=mongodb://localhost:27017
-DOMAIN=https://example.com
+MONGO_PYTHON_URL=mongodb+srv://user:password@cluster.mongodb.net/
+MONGO_NODE_URL=mongodb+srv://user:password@cluster.mongodb.net/
+DOMAINS=https://example.com,https://example2.com,https://example3.com
 PORT=3000
 ```
 
@@ -42,7 +44,8 @@ PORT=3000
 
 ```bash
 # Monitor
-python monitor/main.py
+cd monitor
+python main.py
 
 # API
 node app/app.js
@@ -55,12 +58,13 @@ GET /log       → last 100 ping logs
 GET /analytic  → last 100 hourly analytics
 ```
 
-## Roadmap
+## How monitoring works
 
-- [ ] Multi-domain support
-- [ ] Email and Telegram alerts
-- [ ] Frontend dashboard
-- [ ] Docker support
+- Every 5 seconds, the monitor sends a `HEAD` request to each configured domain
+- If the server doesn't support `HEAD`, it automatically falls back to `GET`
+- If all domains fail simultaneously, a local network issue is detected and reported
+- Every hour, analytics are computed per domain — max, min, and median latency, plus stability status
+- All errors are logged to `monitor/error.txt` with full traceback
 
 ---
 

@@ -1,9 +1,8 @@
-"""Work in analise of logs and save information in database"""
-
+"""
+Work in analise of logs and save information in database
+"""
 from datetime import datetime, UTC, timedelta
-
-# from err_save import log_error
-
+from err_save import log_error
 
 async def save_data(db, url):
     """Analyse logs and save analytics"""
@@ -20,10 +19,10 @@ async def save_data(db, url):
         stats = await db_log.find({"date": {"$gte": last_hour}, "domain": url}).to_list(
             None
         )
-        latencies = sorted([i["latency_ms"] for i in stats])
-
         if not stats:
             return None
+
+        latencies = sorted([i["latency_ms"] for i in stats])
 
         if latencies:
             max_latency = latencies[-1]
@@ -54,5 +53,8 @@ async def save_data(db, url):
             "status": status,
             "date": datetime.now(UTC),
         }
-        await db_collection.insert_one(body)
-        print(f"Saved analytics: \n{body}\n")
+        try:
+            await db_collection.insert_one(body)
+            print(f"Saved analytics: \n{body}\n")
+        except Exception as error:
+            log_error(error)
