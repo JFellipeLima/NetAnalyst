@@ -19,25 +19,25 @@ async def verify(domain, header, cnn, domain_list):
                 res.raise_for_status()
                 domain_list[domain] = res.status_code
 
-            except httpx.HTTPStatusError as exc:
+            except httpx.HTTPStatusError as error:
                 print(
-                    f"\033[33mStatus code error for {domain}: {exc.response.status_code}, retrying...\033[0m\n"
+                    f"\033[33mStatus code error for {domain}: {error.response.status_code}, retrying...\033[0m\n"
                 )
                 try:
                     res = await client.get(domain)
                     domain_list[domain] = res.status_code
 
-                except Exception as exc:
+                except Exception as error:
                     print(
                         f"\033[31mError occurred while retrying with GET method for {domain}\033[0m\n"
                     )
                     domain_list[domain] = 0
-                    log_error(exc)
+                    log_error(error)
 
-            except (httpx.ConnectError, httpx.TimeoutException) as exc:
+            except (httpx.ConnectError, httpx.TimeoutException) as error:
                 print(f"\033[31mConnection error for {domain}\033[0m\n")
                 domain_list[domain] = 0
-                log_error(exc)
+                log_error(error)
 
             finally:
                 if res:

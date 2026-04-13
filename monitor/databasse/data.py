@@ -25,9 +25,11 @@ async def save_data(db, url):
         latencies = sorted([i["latency_ms"] for i in stats])
 
         if latencies:
-            max_latency = latencies[-1]
-            min_latency = latencies[0]
-            avg_latency = latencies[len(latencies) // 2]
+            latency_stats = {
+                "max": latencies[-1],
+                "min": latencies[0],
+                "avg": latencies[len(latencies) // 2]
+}
         else:
             return None
 
@@ -39,16 +41,16 @@ async def save_data(db, url):
 
         if incidents:
             status = "down"
-        elif avg_latency > 500:
+        elif latency_stats["avg"] > 500:
             status = "unstable"
         else:
             status = "stable"
 
         body = {
             "domain_name": url,
-            "max_latency": max_latency,
-            "min_latency": min_latency,
-            "avg_latency": avg_latency,
+            "max_latency": latency_stats["max"],
+            "min_latency": latency_stats["min"],
+            "avg_latency": latency_stats["avg"],
             "incidents": incidents,
             "status": status,
             "date": datetime.now(UTC),
