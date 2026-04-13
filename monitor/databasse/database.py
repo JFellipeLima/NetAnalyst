@@ -18,8 +18,6 @@ async def database_connect():
         if ping:
             print("Connected to the database!\n")
             return cnn["netAnalyst"]
-        else:
-            return None
 
     except Exception as error:
         log_error(error)

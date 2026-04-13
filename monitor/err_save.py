@@ -15,7 +15,7 @@ def log_error(exc):
             )
             file.write(f"{datetime.now(UTC)}: {error_details}\n")
             print(
-                f"\033[31mAn {type(exc).__name__} occurred, check the error.txt file for more details\033[0m\n"
+                f"\033[31mAn {type(exc).__name__} occurred, check error log\033[0m\n"
             )
 
     except FileNotFoundError:

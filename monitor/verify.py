@@ -45,6 +45,5 @@ async def verify(domain, header, cnn, domain_list):
                     await save_ping(
                         domain, res.status_code, cnn, latency, res.request.method
                     )
-
                 await save_data(cnn, domain)
                 await asyncio.sleep(5)
