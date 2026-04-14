@@ -3,7 +3,7 @@ import { model, Schema } from "mongoose"
 const logSchema = new Schema({
   domain: { type: String, required: true, index: true },
   status_code: { type: Number, required: true },
-  date: { type: Date, required: true, index: true },
+  date: { type: Date, required: true, index: true, expires: "5h" },
   latency_ms: { type: Number, required: true },
   method: { type: String, required: true }
 }, {

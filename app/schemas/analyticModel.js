@@ -6,13 +6,13 @@ const incidentType = new Schema({
 })
 
 const graphicModel = new Schema({
-  domain_name: { type: String, required: true, index: true },
+  domain_name: { type: String, required: true, index: true}, 
   max_latency: { type: Number, required: true },
   min_latency: { type: Number, required: true },
   avg_latency: { type: Number, required: true },
   incidents: { type: [incidentType], default: [] },
   status: { type: String, required: true },
-  date: { type: Date, required: true, default: Date.now, index: true }
+  date: { type: Date, required: true, default: Date.now, index: true, expires: '3d' }
 })
 
-export default model("analystic", graphicModel, "analystics")
+export default model("analytic", graphicModel, "analytics")
