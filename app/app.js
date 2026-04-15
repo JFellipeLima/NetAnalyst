@@ -13,10 +13,22 @@ console.log(__dirname + ".env")
 
 app.use(express.json())
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}))
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type', 
+      'Authorization',
+       'DNT', 
+       'User-Agent', 
+       'X-Requested-With', 
+       'If-Modified-Since',
+        'Cache-Control', 
+        'Range',
+      'Access-Control-Allow-Origin'
+    ],
+    credentials: true
+}));
+
 app.use(express.urlencoded({ extended: true }))
 app.use("/", routes)
 

@@ -1,5 +1,6 @@
 import log from "../schemas/logModel.js"
 import analytic from "../schemas/analyticModel.js"
+
 async function getDomains(req, res) {
   try {
     let domains = await analytic.find({}).distinct("domain_name")

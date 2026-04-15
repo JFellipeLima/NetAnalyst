@@ -6,13 +6,15 @@ const incidentType = new Schema({
 })
 
 const graphicModel = new Schema({
-  domain_name: { type: String, required: true, index: true}, 
+  domain_name: { type: String, required: true}, 
   max_latency: { type: Number, required: true },
   min_latency: { type: Number, required: true },
   avg_latency: { type: Number, required: true },
   incidents: { type: [incidentType], default: [] },
   status: { type: String, required: true },
-  date: { type: Date, required: true, default: Date.now, index: true, expires: '3d' }
+  date: { type: Date, required: true, default: Date.now}
 })
+
+graphicModel.index({ date: 1}, { expireAfterSeconds: 2592000}) // add expire functionality
 
 export default model("analytic", graphicModel, "analytics")

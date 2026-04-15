@@ -17,7 +17,7 @@ async def database_connect():
         ping = await cnn.admin.command("ping")
         if ping:
             print("Connected to the database!\n")
-            return cnn["netAnalyst"]
+            return cnn[getenv("DB")]
 
     except Exception as error: # pylint: disable=broad-exception-caught
         log_error(error)
