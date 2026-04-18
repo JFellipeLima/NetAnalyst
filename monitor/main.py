@@ -6,10 +6,12 @@ to a database for consumption and vidualization of graphic.
 import os
 import asyncio
 from dotenv import load_dotenv
+from pathlib import Path
 from databasse.database import database_connect
 from verify import verify
 
-load_dotenv()
+__dirname =  Path(__file__).resolve().parent
+load_dotenv(__dirname / ".env")
 
 async def local_check(domain_list, total):
     """Check if the domain is down"""
