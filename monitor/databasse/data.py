@@ -9,12 +9,12 @@ async def save_data(db, url):
     db_collection = db["analytics"]
     db_log = db["logs"]
 
-    last_hour = datetime.now(UTC) - timedelta(hours=1)
+    last_hour = datetime.now(UTC) - timedelta(minutes=3)
     check_last = await db_collection.find_one({"domain_name": url}, sort=[("date", -1)])
     check_last_update = check_last["date"].replace(tzinfo=UTC) if check_last else None
 
     if check_last_update is None or datetime.now(UTC) - check_last_update >= timedelta(
-        hours=1
+        minutes=3
     ):
         stats = await db_log.find({"date": {"$gte": last_hour}, "domain": url}).to_list(
             None
@@ -58,5 +58,5 @@ async def save_data(db, url):
         try:
             await db_collection.insert_one(body)
             print(f"Saved analytics: \n{body}\n")
-        except Exception as error:
+        except Exception as error: # pylint: disable=broad-exception-caught
             log_error(error)

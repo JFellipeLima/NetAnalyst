@@ -10,10 +10,10 @@ from databasse.ping import save_ping
 async def verify(domain, header, cnn, domain_list):
     """Connect and get information with host"""
     async with httpx.AsyncClient(
-        headers=header, 
-        http2=True, 
-        follow_redirects=True, 
-        timeout=10, 
+        headers=header,
+        http2=True,
+        follow_redirects=True,
+        timeout=10,
         verify=False
     ) as client:
         while True:
@@ -23,7 +23,7 @@ async def verify(domain, header, cnn, domain_list):
                 res.raise_for_status()
                 domain_list[domain] = res.status_code
 
-            except httpx.HTTPStatusError as error:
+            except httpx.HTTPStatusError:
                 print(
                     f"\033[33mStatus code error for {domain}: retrying...\033[0m\n"
                 )
@@ -47,7 +47,7 @@ async def verify(domain, header, cnn, domain_list):
                 if res:
                     latency = res.elapsed.total_seconds() * 1000
                     await save_ping(
-                        domain, res.status_code, 
+                        domain, res.status_code,
                         cnn, latency, res.request.method
                     )
                 await save_data(cnn, domain)

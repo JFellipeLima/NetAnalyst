@@ -5,8 +5,8 @@ to a database for consumption and vidualization of graphic.
 """
 import os
 import asyncio
-from dotenv import load_dotenv
 from pathlib import Path
+from dotenv import load_dotenv
 from databasse.database import database_connect
 from verify import verify
 
@@ -22,7 +22,6 @@ async def local_check(domain_list, total):
                 "\033[33m Local network error detected.., check your connection.\033[0m\n"
             )
         await asyncio.sleep(5)
-
 async def main():
     """Organize and run script"""
     db = await database_connect()
@@ -31,9 +30,8 @@ async def main():
         return
 
     domain_list = {}
-
     headers = {"Accept-Encoding": "gzip, deflate", "accept": "application/json"}
-    domains = [verify(url, headers, db, domain_list) for url in os.getenv("DOMAINS").split(",")] 
+    domains = [verify(url, headers, db, domain_list) for url in os.getenv("DOMAINS").split(",")]
     await asyncio.gather(
         *domains,
         local_check(domain_list, domains)
