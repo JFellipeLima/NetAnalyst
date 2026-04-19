@@ -1,11 +1,25 @@
 import { model, Schema } from "mongoose"
 
-const incidentType = new Schema({
+interface incidentsInterface {
+  status_code: number,
+  date: Date
+}
+export interface analyticInterface {
+  domain_name: string,
+  max_latency: number,
+  avg_latency: number,
+  min_latency: number
+  incidents: incidentsInterface[],
+  status: string,
+  date: Date
+
+}
+const incidentType = new Schema<incidentsInterface>({
   status_code: { type: Number, required: true },
   date: { type: Date, required: true }
 })
 
-const graphicModel = new Schema({
+const graphicModel = new Schema<analyticInterface>({
   domain_name: { type: String, required: true}, 
   max_latency: { type: Number, required: true },
   min_latency: { type: Number, required: true },
@@ -17,4 +31,4 @@ const graphicModel = new Schema({
 
 graphicModel.index({ date: 1}, { expireAfterSeconds: 2592000}) // add expire functionality
 
-export default model("analytic", graphicModel, "analytics")
+export const analyticModel = model<analyticInterface>("analytic", graphicModel, "analytics")
