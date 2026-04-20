@@ -4,12 +4,10 @@ A lightweight network monitoring system that tracks domain availability and resp
 
 ## How it works
 
-Two independent services share the same MongoDB database:
+Two independent services:
 
 - **Monitor** (Python) — pings configured domains every 5 seconds, measures latency, and runs hourly analytics to classify each domain as `stable`, `unstable`, or `down`
 - **API** (Node.js/Express) — exposes collected data via REST endpoints
-
-The monitor runs multiple domains concurrently and detects whether failures are caused by the target site or by a local network issue.
 
 ## Getting Started
 
@@ -17,8 +15,6 @@ The monitor runs multiple domains concurrently and detects whether failures are 
 
 - Python 3.11+
 - Node.js 20+
-- MongoDB instance (local or Atlas)
-
 ### Installation
 
 ```bash
@@ -48,14 +44,14 @@ cd monitor
 python main.py
 
 # API
-node app/app.js
+npm run test
 ```
 
 ## Endpoints
 
 ```
-GET /log       → last 100 ping logs
-GET /analytic  → last 100 hourly analytics
+POST /log       → last 100 ping logs
+POST /analytic  → last 100 hourly analytics
 ```
 
 ## How monitoring works
