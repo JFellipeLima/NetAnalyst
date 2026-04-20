@@ -3,7 +3,8 @@ import express from "express"
 import path from "path"
 import cors from "cors"
 import connect_db from "./schemas/database/database"
-import routes from "./routes/logRoutes.js"
+import logRoutes from "./routes/logRoutes.js"
+import userRoutes from "./routes/userRouters"
 
 const app = express()
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
@@ -30,7 +31,8 @@ app.use(cors({
 }));
 
 app.use(express.urlencoded({ extended: true }))
-app.use("/", routes)
+app.use("/", logRoutes)
+app.use("/user", userRoutes)
 
 app.listen(process.env.PORT, () => {
   connect_db(process.env.MONGO_NODE_URL)

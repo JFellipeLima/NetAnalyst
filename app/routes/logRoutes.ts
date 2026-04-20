@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { getLogs, getAnalytics, getDomains } from "../controllers/logController"
+import logController from "../controllers/logController"
 
 const router = Router()
 
-router.post("/log", getLogs)
-router.post("/analytic", getAnalytics)
-router.post("/domains", getDomains)
+router.post("/log", logController.getLogs)
+router.post("/analytic", logController.getAnalytics)
+router.post("/domains", logController.getDomains)
 
 export default router

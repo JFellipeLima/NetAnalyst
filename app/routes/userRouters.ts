@@ -1,11 +1,11 @@
-/*import { Router } from "express"
-import { addUser, delUser, getUser, upUser } from "../controllers/userController"
+import { Router } from "express"
+import userController from "../controllers/userController"
 
 const router = Router()
 
-router.post("/user/get", getUser)
-router.post("/user/add", addUser)
-router.put("/user/up", upUser)
-router.delete("/user/del", delUser)
+router.post("/get", userController.getUser)
+router.post("/add", userController.addUser)
+router.put("/up", userController.updateUser)
+router.delete("/del/:email", userController.delUser)
 
-export default router*/
+export default router
