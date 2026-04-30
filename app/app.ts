@@ -2,8 +2,7 @@ import dotenv from "dotenv"
 import express from "express"
 import path from "path"
 import cors from "cors"
-import connect_db from "./schemas/database/database"
-import logRoutes from "./routes/logRoutes.js"
+import logRoutes from "./routes/logRoutes"
 import userRoutes from "./routes/userRouters"
 
 const app = express()
@@ -35,6 +34,5 @@ app.use("/", logRoutes)
 app.use("/user", userRoutes)
 
 app.listen(process.env.PORT, () => {
-  connect_db(process.env.MONGO_NODE_URL)
   console.log("API is running.")
 })

@@ -5,3 +5,4 @@ monitor/databasse/__pycache__/
 /monitor/error.txt 
 /monitor/__pycache__/
 /monitor/venv
+/app/generated/prisma

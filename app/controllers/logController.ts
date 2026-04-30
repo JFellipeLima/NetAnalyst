@@ -1,4 +1,3 @@
-import { analyticService } from "../services/analyticService"
 import logService from "../services/logService"
 import type { Request, Response } from 'express'
 
@@ -18,17 +17,6 @@ export default class logController{
       res.status(200).json(data)
     } catch {
       res.status(500).json({ message: "Internal server error"})
-    }
-  }
-
-  static async getAnalytics(req: Request, res: Response) {
-    try {
-      const domainName = req.body["domain_name"]
-      const data = await analyticService.getAnalytic(domainName)
-      res.status(200).json(data)
-
-    } catch (err) {
-      res.status(500).json({ message: "Internal server error" })
     }
   }
 }

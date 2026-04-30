@@ -1,5 +1,3 @@
-import { model, Schema } from "mongoose"
-
 interface incidentsInterface {
   status_code: number,
   date: Date
@@ -12,9 +10,8 @@ export interface analyticInterface {
   incidents: incidentsInterface[],
   status: string,
   date: Date
-
 }
-const incidentType = new Schema<incidentsInterface>({
+/*const incidentType = new <incidentsInterface>({
   status_code: { type: Number, required: true },
   date: { type: Date, required: true }
 })
@@ -31,4 +28,4 @@ const graphicModel = new Schema<analyticInterface>({
 
 graphicModel.index({ date: 1}, { expireAfterSeconds: 2592000}) // add expire functionality
 
-export const analyticModel = model<analyticInterface>("analytic", graphicModel, "analytics")
+export const analyticModel = model<analyticInterface>("analytic", graphicModel, "analytics")*/

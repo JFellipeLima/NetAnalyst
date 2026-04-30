@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model domains {
+  id         Int       @id @default(autoincrement())
+  url        String    @unique
+  active     Boolean
+  last_check DateTime? @default(now()) @db.Timestamptz(6)
+  guys       guys[]
+  logs       logs[]
+}
+
+model guys {
+  domain_id Int
+  user_id   Int
+  domains   domains @relation(fields: [domain_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users     users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([user_id, domain_id])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model logs {
+  domain_id   Int
+  status_code Int
+  date        DateTime? @default(now()) @db.Timestamptz(6)
+  latency_ms  Float
+  method      String    @default("HEAD")
+  id          Int       @id @default(autoincrement())
+  domains     domains?  @relation(fields: [domain_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  active     Boolean? @default(true)
+  passkey    String
+  guys       guys[]
+}

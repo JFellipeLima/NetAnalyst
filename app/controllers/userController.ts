@@ -13,7 +13,7 @@ export default class UserController {
 
   static async getUser(req: Request, res: Response): Promise<void> {
     try {
-      const user = await userService.getUser(req.body["email"]);
+      const user = await userService.getUser(req.params.email);
       res.status(200).json(user);
     } catch (error: any) {
       res.status(404).json({ message: error.message });
@@ -22,7 +22,7 @@ export default class UserController {
 
   static async updateUser(req: Request, res: Response): Promise<void> {
     try {
-      const email = req.body;
+      const email = req.body["email"];
       await userService.upUser(email, req.body);
       res.status(200).json({ message: "User updated successfully" });
     } catch (error: any) {

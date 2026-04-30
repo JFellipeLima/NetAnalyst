@@ -3,7 +3,7 @@ import userController from "../controllers/userController"
 
 const router = Router()
 
-router.post("/get", userController.getUser)
+router.get("/get/:email", userController.getUser)
 router.post("/add", userController.addUser)
 router.put("/up", userController.updateUser)
 router.delete("/del/:email", userController.delUser)
